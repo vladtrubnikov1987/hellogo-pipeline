@@ -9,7 +9,22 @@ import (
 func handler(w http.ResponseWriter, r *http.Request) {
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 
-	fmt.Fprintf(w, "shalom, world!\nCurrent time: %s\n", currentTime)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	fmt.Fprintf(w, `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="1">
+    <title>HelloGo</title>
+</head>
+<body>
+    <h1>shalom, world!</h1>
+    <p>Current time: %s</p>
+</body>
+</html>
+`, currentTime)
 }
 
 func main() {
