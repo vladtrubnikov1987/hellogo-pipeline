@@ -2,6 +2,15 @@ name: Terraform Deploy to Azure
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: Choose Terraform workspace
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
 
 jobs:
   deploy:
@@ -26,6 +35,11 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+
+      - name: Select or create workspace
+        run: |
+          terraform workspace select "${{ inputs.environment }}" ||
+          terraform workspace new "${{ inputs.environment }}"
 
       - name: Terraform Format Check
         run: terraform fmt -check
