@@ -1,21 +1,26 @@
+locals {
+  environment = terraform.workspace
+}
+
 resource "azurerm_resource_group" "aci_rg" {
-  name     = "rg-vladimir-hellogo-aci"
+  name     = "rg-vladimir-hellogo-aci-${local.environment}"
   location = "westeurope"
 
   tags = {
-    project = "hellogo"
-    lesson  = "github-actions-aci"
+    project     = "hellogo"
+    lesson      = "github-actions-aci"
+    environment = local.environment
   }
 }
 
 resource "azurerm_container_group" "hellogo" {
-  name                = "aci-hellogo"
+  name                = "aci-hellogo-${local.environment}"
   location            = azurerm_resource_group.aci_rg.location
   resource_group_name = azurerm_resource_group.aci_rg.name
   os_type             = "Linux"
 
   ip_address_type = "Public"
-  dns_name_label  = "vladimir-hellogo-aci"
+  dns_name_label  = "vladimir-hellogo-aci-${local.environment}"
 
   container {
     name   = "hellogo"
@@ -35,8 +40,9 @@ resource "azurerm_container_group" "hellogo" {
   }
 
   tags = {
-    project = "hellogo"
-    lesson  = "github-actions-aci"
+    project     = "hellogo"
+    lesson      = "github-actions-aci"
+    environment = local.environment
   }
 }
 
