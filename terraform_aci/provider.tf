@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.5.0"
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -6,11 +8,8 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "rg-vladimir-tfstate"
-    storage_account_name = "stvladimirtfstate1987"
-    container_name       = "tfstate"
-    key                  = "hellogo-aci.tfstate"
+  backend "local" {
+    path = "terraform.tfstate"
   }
 }
 
